@@ -1,0 +1,16 @@
+:root {
+  /* Base */
+  --z-base: 0;
+  --z-content: 1;
+
+  /* Layout */
+  --z-layout: 20; 
+
+  /* Overlays */
+  --z-overlay: 50;
+
+  /* Top layers */
+  --z-top: 998;
+  --z-max: 999;
+	--z-system: 9999;
+}

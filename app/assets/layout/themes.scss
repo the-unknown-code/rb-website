@@ -1,0 +1,17 @@
+@use 'sass:color';
+
+:root {
+	@each $name, $theme in getThemes() {
+		.theme-#{$name} {
+			@each $name, $color in $theme {
+				--theme-#{$name}: #{$color};
+			}
+		}
+	}
+}
+
+:root {
+  @each $name, $color in getColors() {
+    --#{$name}: #{$color};
+  }
+}

@@ -1,0 +1,46 @@
+@use 'sass:map';
+
+$desktop-breakpoint: get('platform.desktopBreakpoint');
+
+@mixin hover {
+	@media (hover: hover) and (pointer: fine) {
+		&:hover {
+			@content;
+		}
+	}
+}
+
+@mixin mobile {
+	@media (max-width: #{ $desktop-breakpoint * 1px - 1px }) {
+		@content;
+	}
+}
+
+@mixin desktop($breakpoint: $desktop-breakpoint) {
+	@media (min-width: #{ $breakpoint * 1px }) {
+		@content;
+	}
+}
+
+@mixin reduced-motion {
+	@media (prefers-reduced-motion: reduce) {
+		@content;
+	}
+
+	:where(.low-power-mode *) & {
+		@content;
+	}
+}
+
+@mixin line-clamp($lines: 3, $desktop-lines: $lines) {
+	display: -webkit-box;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	-webkit-box-orient: vertical;
+	-webkit-line-clamp: $lines;
+	white-space: normal;
+
+	@include desktop() {
+		-webkit-line-clamp: $desktop-lines;
+	}
+}

@@ -1,0 +1,63 @@
+@use 'sass:list';
+@use 'sass:map';
+@use '../utils/mixins.scss' as *;
+
+$layout: (
+	'columns-count': get('grid.columns'),
+	'columns-gap': get('grid.gap'),
+	'margin': get('grid.margin'),
+);
+
+$columns: map.get($layout, 'columns-count');
+$gap: map.get($layout, 'columns-gap');
+$margin: map.get($layout, 'margin');
+
+:root {
+	--layout-columns-count: #{list.nth($columns, 1)};
+	--layout-columns-gap: #{list.nth($gap, 1)}px;
+	--layout-margin: #{list.nth($margin, 1)}px;
+
+	--layout-width: calc(100vw - (2 * var(--layout-margin)));
+	--layout-column-width: calc(
+		(
+				var(--layout-width) -
+					((var(--layout-columns-count) - 1) * var(--layout-columns-gap))
+			) / var(--layout-columns-count)
+	);
+
+
+	@include desktop {
+		--layout-columns-count: #{list.nth($columns, 2)};
+		--layout-columns-gap: #{list.nth($gap, 2)}px;
+		--layout-margin: #{list.nth($margin, 2)}px;
+	}
+}
+
+%layout-grid {
+	display: grid;
+	grid-template-columns: repeat(var(--layout-columns-count), minmax(0, 1fr));
+	gap: var(--layout-columns-gap);
+}
+
+.layout-block {
+	max-width: var(--layout-width);
+	margin-left: auto;
+	margin-right: auto;
+	width: 100%;
+}
+
+.layout-block-inner {
+	padding-left: var(--layout-margin);
+	padding-right: var(--layout-margin);
+	width: 100%;
+}
+
+.layout-grid {
+	@extend .layout-block;
+	@extend %layout-grid;
+}
+
+.layout-grid-inner {
+	@extend .layout-block-inner;
+	@extend %layout-grid;
+}

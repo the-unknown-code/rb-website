@@ -1,0 +1,30 @@
+@use "sass:math";
+@use "sass:meta";
+
+$fluid-min-width: get("fonts.options.fluidMinWidth");
+$fluid-base-width: get("fonts.options.fluidBaseWidth");
+$fluid-max-width: get("fonts.options.fluidMaxWidth");
+
+@function fluid($min-size, $max-size, $unit: 1px) {
+	@if math.is-unitless($min-size) {
+		$min-size: $min-size * $unit;
+	}
+
+	@if math.is-unitless($max-size) {
+		$max-size: $max-size * $unit;
+	}
+
+	$slope: math.div(
+		$max-size - $min-size,
+		$fluid-max-width - $fluid-min-width
+	);
+
+	$intercept: $min-size - ($slope * $fluid-min-width);
+	$coefficient: math.div($slope, 1px) * 100;
+
+	@return clamp(
+  #{$min-size},
+  calc(#{$intercept} + #{$coefficient}vw),
+  #{$max-size}
+);
+}
